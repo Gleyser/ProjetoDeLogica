@@ -3,23 +3,41 @@ module AgendamentoDeCaronas
 //Assinaturas
 
 sig Sistema{
-	alunos : set Usuario
-	caronas: set Carona
-	pedidos: set Pedido
+	alunos : set Usuario,
+	caronas: set Carona,
+	pedidos: set Pedido,
 	usuariosAtivos: set Usuario
 }
 
 sig Usuario{
-	regioes: one Regiao,
+	regiao: one Regiao,
 	matricula: one Matricula,
 }
 
+sig Motorista extends Usuario{
+	espacoDoCarro : Tamanho
+}
+
+sig Tamanho{
+
+}
+
 sig Pedido{
+	pedinte: one Usuario
 
 }
 
 sig Carona{
-	
+	caroneiros: set Usuario,
+	motorista: one Motorista
+}
+
+sig CaronaIda extends Carona{
+	regiaoIda: one Regiao
+}
+
+sig CaronaVolta extends Carona{
+	regiaoVolta: one Regiao
 }
 
 sig Matricula{}
@@ -34,19 +52,36 @@ pred alunosTemMatriculaDiferente{
 	all m: Matricula | one m.~matricula
 }
 
-pred alunoEstaNaUfcg{
+pred alunoEstaNoSistema{
 	some u: Sistema | all a: Usuario | a in u.usuariosAtivos
 }
+
+pred caroneirosNaoContemOMotorista{
+	all c:Carona | !(c.motorista in c.caroneiros)
+}
+
+pred regiaoDaCaronaIdaEhIgualARegiaoDoMotorista{
+	all c:CaronaIda | c.motorista.regiao = c.regiaoIda
+}
+
+pred regiaoDaCaronaVoltaEhIgualARegiaoDoMotorista{
+	all c:CaronaVolta | c.motorista.regiao = c.regiaoVolta
+}
+
+
 
 //Fatos
 
 fact{
 	alunosTemMatriculaDiferente
-	alunoEstaNaUfcg
+	alunoEstaNoSistema
+	caroneirosNaoContemOMotorista
+	regiaoDaCaronaIdaEhIgualARegiaoDoMotorista
+	regiaoDaCaronaVoltaEhIgualARegiaoDoMotorista
 }
 
 
 pred show []{
-	some UFCG
+	some Sistema
 }
-run show
+run show for 4
