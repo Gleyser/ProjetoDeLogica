@@ -14,23 +14,21 @@ sig Usuario{
 	matricula: one Matricula,
 }
 
-sig Motorista extends Usuario{
-	espacoDoCarro : Vagas
+sig Motorista extends Usuario{}
+
+
+sig Vaga{
+     ocupante: lone Usuario,
 }
-
-sig Vagas{
-	vagas: set Vagas,
-} {#vagas <= 4}
-
 
 sig Pedido{
 	pedinte: one Usuario
-
 }
 
 sig Carona{
 	caroneiros: set Usuario,
 	motorista: one Motorista,
+    vagas: set Vaga,
 }
 
 sig CaronaIda extends Carona {
@@ -48,6 +46,10 @@ abstract sig Regiao{}
 one sig CATOLE, LIBERDADE, PRATA, CENTRO, CRUZEIRO, CIDADESVIZINHAS extends Regiao {}
 
 //Predicados
+
+//pred umUsuarioIdaEVolta{
+ //   all c:CaronaIda, c1:CaronaVolta | one c.caroneiros & one 
+//}
 
 pred alunosTemMatriculaDiferente{
 	all m: Matricula | one m.~matricula
@@ -68,7 +70,6 @@ pred regiaoDaCaronaIdaEhIgualARegiaoDoMotorista{
 pred regiaoDaCaronaVoltaEhIgualARegiaoDoMotorista{
 	all c:CaronaVolta | c.motorista.regiao = c.regiaoVolta
 }
-
 
 
 //Fatos
