@@ -15,12 +15,13 @@ sig Usuario{
 }
 
 sig Motorista extends Usuario{
-	espacoDoCarro : Tamanho
+	espacoDoCarro : Vagas
 }
 
-sig Tamanho{
+sig Vagas{
+	vagas: set Vagas,
+} {#vagas <= 4}
 
-}
 
 sig Pedido{
 	pedinte: one Usuario
@@ -29,10 +30,10 @@ sig Pedido{
 
 sig Carona{
 	caroneiros: set Usuario,
-	motorista: one Motorista
+	motorista: one Motorista,
 }
 
-sig CaronaIda extends Carona{
+sig CaronaIda extends Carona {
 	regiaoIda: one Regiao
 }
 
@@ -84,4 +85,4 @@ fact{
 pred show []{
 	some Sistema
 }
-run show for 4
+run show for 5
