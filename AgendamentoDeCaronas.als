@@ -47,9 +47,6 @@ one sig CATOLE, LIBERDADE, PRATA, CENTRO, CRUZEIRO, CIDADESVIZINHAS extends Regi
 
 //Predicados
 
-//pred umUsuarioIdaEVolta{
- //   all c:CaronaIda, c1:CaronaVolta | one c.caroneiros & one 
-//}
 
 pred alunosTemMatriculaDiferente{
 	all m: Matricula | one m.~matricula
@@ -71,6 +68,9 @@ pred regiaoDaCaronaVoltaEhIgualARegiaoDoMotorista{
 	all c:CaronaVolta | c.motorista.regiao = c.regiaoVolta
 }
 
+pred motoristaNaoEPedinte {
+   all c:Carona, p:Pedido | !(c.motorista = p.pedinte)
+}
 
 //Fatos
 
@@ -78,6 +78,7 @@ fact{
 	alunosTemMatriculaDiferente
 	alunoEstaNoSistema
 	caroneirosNaoContemOMotorista
+	motoristaNaoEPedinte
 	regiaoDaCaronaIdaEhIgualARegiaoDoMotorista
 	regiaoDaCaronaVoltaEhIgualARegiaoDoMotorista
 }
@@ -86,4 +87,4 @@ fact{
 pred show []{
 	some Sistema
 }
-run show for 5
+run show for 4
